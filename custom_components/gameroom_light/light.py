@@ -48,15 +48,16 @@ from . import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
-light_entity = "light.dining_room_group"
+light_entity = "light.gameroom_group"
 # harmony_entity = "remote.theater_harmony_hub"
-switch_action = "zigbee2mqtt/Dining Room Switch/action"
-motion_sensor_action = "zigbee2mqtt/Dining Room Motion Sensor"
+switch_action = "zigbee2mqtt/Gameroom Switch/action"
+# motion_sensor_action = "zigbee2mqtt/Gameroom Motion Sensor"
 brightness_step = 43
 motion_sensor_brightness = 192
 has_harmony = False
-has_motion_sensor = True
+has_motion_sensor = False
 has_switch = True
+has_json = True
 
 
 async def async_setup_platform(
@@ -78,6 +79,11 @@ async def async_setup_platform(
         await ent.switch_message_received(topic, payload, qos)
 
     @callback
+    async def json_switch_message_received(topic: str, payload: str, qos: int) -> None:
+        """A new MQTT message has been received."""
+        await ent.json_switch_message_received(topic, payload, qos)
+
+    @callback
     async def motion_sensor_message_received(
         topic: str, payload: str, qos: int
     ) -> None:
@@ -85,9 +91,14 @@ async def async_setup_platform(
         await ent.motion_sensor_message_received(topic, json.loads(payload), qos)
 
     if has_switch:
-        await hass.components.mqtt.async_subscribe(
-            switch_action, switch_message_received
-        )
+        if has_json:
+            await hass.components.mqtt.async_subscribe(
+                switch_action, json_switch_message_received
+            )
+        else:
+            await hass.components.mqtt.async_subscribe(
+                switch_action, switch_message_received
+            )
     if has_motion_sensor:
         await hass.components.mqtt.async_subscribe(
             motion_sensor_action, motion_sensor_message_received
@@ -123,6 +134,18 @@ class DiningRoomLight(LightEntity):
         # self._supported_features |= SUPPORT_COLOR
         self._supported_features |= SUPPORT_TRANSITION
         self._supported_features |= SUPPORT_WHITE_VALUE
+
+        # Track button presses for JSON handling
+        self._buttonCounts = {
+            "on-press": 0,
+            "on-hold": 0,
+            "up-press": 0,
+            "up-hold": 0,
+            "down-press": 0,
+            "down-hold": 0,
+            "off-press": 0,
+            "off-hold": 0,
+        }
 
         # Record whether a switch was used to turn on this light
         self.switched_on = False
@@ -378,6 +401,13 @@ class DiningRoomLight(LightEntity):
             await self.down_brightness(source="Switch")
         else:
             _LOGGER.error(f"{self._name} Light Fail: {payload}")
+
+    async def json_switch_message_received(
+        self, topic: str, payload: str, qos: int
+    ) -> None:
+        """A new MQTT message has been received."""
+        _LOGGER.error(f"{self._name} JSON Switch Handler: {payload}")
+        # self.hass.states.async_set(f"light.{self._name}", f"ENT: {payload}")
 
     async def motion_sensor_message_received(
         self, topic: str, payload: str, qos: int
