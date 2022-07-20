@@ -70,7 +70,7 @@ async def async_setup_platform(
     # We only want this platform to be set up via discovery.
     if discovery_info is None:
         return
-    ent = DiningRoomLight()
+    ent = GameroomLight()
     add_entities([ent])
 
     @callback
@@ -105,13 +105,13 @@ async def async_setup_platform(
         )
 
 
-class DiningRoomLight(LightEntity):
-    """Dining Room Light."""
+class GameroomLight(LightEntity):
+    """Gameroom Light."""
 
     def __init__(self) -> None:
-        """Initialize Dining Room Light."""
+        """Initialize Gameroom Light."""
         self._light = light_entity
-        self._name = "Dining Room"
+        self._name = "Gameroom"
         # self._state = 'off'
         self._brightness = 0
         self._brightness_override = 0
