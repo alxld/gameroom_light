@@ -49,6 +49,7 @@ from . import DOMAIN
 _LOGGER = logging.getLogger(__name__)
 
 light_entity = "light.gameroom_group"
+lamp_entity = "light.gameroom_lamp"
 # harmony_entity = "remote.theater_harmony_hub"
 switch_action = "zigbee2mqtt/Gameroom Switch/action"
 # motion_sensor_action = "zigbee2mqtt/Gameroom Motion Sensor"
@@ -111,6 +112,7 @@ class GameroomLight(LightEntity):
     def __init__(self) -> None:
         """Initialize Gameroom Light."""
         self._light = light_entity
+        self._lamp = lamp_entity
         self._name = "Gameroom"
         # self._state = 'off'
         self._brightness = 0
@@ -159,6 +161,7 @@ class GameroomLight(LightEntity):
     async def async_added_to_hass(self) -> None:
         """Instantiate RightLight"""
         self._rightlight = RightLight(self._light, self.hass)
+        self._rightlight2 = RightLight(self._lamp, self.hass)
 
         #        #temp = self.hass.states.get(harmony_entity).new_state
         #        #_LOGGER.error(f"Harmony state: {temp}")
@@ -324,8 +327,13 @@ class GameroomLight(LightEntity):
                 brightness=self._brightness,
                 brightness_override=self._brightness_override,
             )
+            await self._rightlight2.turn_on(
+                brightness=self._brightness,
+                brightness_override=self._brightness_override,
+            )
         else:
             await self._rightlight.turn_on_specific(data)
+            await self._rightlight2.turn_on_specific(data)
 
         self.async_schedule_update_ha_state(force_refresh=True)
 
@@ -335,6 +343,7 @@ class GameroomLight(LightEntity):
         self._brightness = 255
         self.switched_on = True
         await self._rightlight.turn_on(mode=self._mode)
+        await self._rightlight2.turn_on(mode=self._mode)
         self.async_schedule_update_ha_state(force_refresh=True)
 
     async def async_turn_off(self, **kwargs: Any) -> None:
@@ -344,6 +353,7 @@ class GameroomLight(LightEntity):
         self._is_on = False
         self.switched_on = False
         await self._rightlight.disable_and_turn_off()
+        await self._rightlight2.disable_and_turn_off()
         self.async_schedule_update_ha_state(force_refresh=True)
 
     async def up_brightness(self, **kwargs) -> None:
@@ -408,6 +418,67 @@ class GameroomLight(LightEntity):
         """A new MQTT message has been received."""
         _LOGGER.error(f"{self._name} JSON Switch Handler: {payload}")
         # self.hass.states.async_set(f"light.{self._name}", f"ENT: {payload}")
+
+        button_map_data = json.load(open("button_map.json"))
+
+        if payload in button_map_data.keys():
+            config_list = button_map_data[payload]
+            this_list = config_list[self._buttonCounts[payload]]
+
+            # Increment button count and loop to zero.  Zero out the rest
+            self._buttonCounts[payload] += 1
+            if self._buttonCounts[payload] >= len(config_list):
+                self._buttonCounts[payload] = 0
+            for key in self._buttonCounts.keys():
+                if key != payload:
+                    self._buttonCounts[key] = 0
+
+            for command in this_list:
+                if command[0] == "Brightness":
+                    ent = command[1]
+                    br = command[2]
+
+                    if br == 0:
+                        await self.hass.services.async_call(
+                            "light", "turn_off", {"entity_id": ent}
+                        )
+                    else:
+                        await self.hass.services.async_call(
+                            "light", "turn_on", {"entity_id": ent, "brightness": br}
+                        )
+                elif command[0] == "RightLight":
+                    ent = command[1]
+                    val = command[2]
+
+                    if ent == self._light:
+                        rl = self._rightlight
+                    elif ent == self._lamp:
+                        rl = self._rightlight2
+                    else:
+                        _LOGGER.error(
+                            f"{self_name} error - unknown entity in button_map.json: {ent}"
+                        )
+                        _LOGGER.error(
+                            f"{self_name}         should be either {self._light} or {self._lamp}"
+                        )
+                        continue
+
+                    if val == "Disable":
+                        await rl.disable()
+                    elif val in rl.getColorModes():
+                        await rl.turn_on(mode=val)
+                    elif val == 0:
+                        await rl.disable_and_turn_off()
+                    else:
+                        await rl.turn_on(brightness=val, brightness_override=0)
+                elif command[0] == "Scene":
+                    await self.hass.services.async_call(
+                        "scene", "turn_on", {"entity_id": ent}
+                    )
+                else:
+                    _LOGGER.error(
+                        f"{self._name} error - unrecognized button_map.json command type: {command[0]}"
+                    )
 
     async def motion_sensor_message_received(
         self, topic: str, payload: str, qos: int

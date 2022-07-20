@@ -372,3 +372,6 @@ class RightLight:
             this_ptr = this_ptr + 1
             if this_ptr >= len(two_trip_points):
                 this_ptr = 0
+
+    def getColorModes(self):
+        return self.trip_points.keys()
