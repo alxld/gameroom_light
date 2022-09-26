@@ -480,6 +480,7 @@ class GameroomLight(LightEntity):
                     else:
                         await rl.turn_on(brightness=val, brightness_override=0)
                 elif command[0] == "Scene":
+                    _LOGGER.error(f"{self._name} JSON Switch Scene: {ent}")
                     await self.hass.services.async_call(
                         "scene", "turn_on", {"entity_id": ent}
                     )
