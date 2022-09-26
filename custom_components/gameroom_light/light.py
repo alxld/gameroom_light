@@ -441,7 +441,7 @@ class GameroomLight(LightEntity):
                     self._buttonCounts[key] = 0
 
             for command in this_list:
-                _LOGGER.error(f"{self._name} JSON Switch command: {command}")
+                # _LOGGER.error(f"{self._name} JSON Switch command: {command}")
                 if command[0] == "Brightness":
                     ent = command[1]
                     br = command[2]
@@ -480,9 +480,9 @@ class GameroomLight(LightEntity):
                     else:
                         await rl.turn_on(brightness=val, brightness_override=0)
                 elif command[0] == "Scene":
-                    _LOGGER.error(f"{self._name} JSON Switch Scene: {ent}")
+                    # _LOGGER.error(f"{self._name} JSON Switch Scene: {command[1]}")
                     await self.hass.services.async_call(
-                        "scene", "turn_on", {"entity_id": ent}
+                        "scene", "turn_on", {"entity_id": command[1]}
                     )
                 else:
                     _LOGGER.error(
