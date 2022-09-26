@@ -135,7 +135,7 @@ class GameroomLight(LightEntity):
         self._supported_features: int = 0
         self._supported_features |= SUPPORT_BRIGHTNESS
         self._supported_features |= SUPPORT_COLOR_TEMP
-        # self._supported_features |= SUPPORT_COLOR
+        self._supported_features |= SUPPORT_COLOR
         self._supported_features |= SUPPORT_TRANSITION
         # self._supported_features |= SUPPORT_WHITE_VALUE
 
