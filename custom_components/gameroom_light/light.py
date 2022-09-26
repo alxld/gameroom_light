@@ -441,6 +441,7 @@ class GameroomLight(LightEntity):
                     self._buttonCounts[key] = 0
 
             for command in this_list:
+                _LOGGER.error(f"{self._name} JSON Switch command: {command}")
                 if command[0] == "Brightness":
                     ent = command[1]
                     br = command[2]
