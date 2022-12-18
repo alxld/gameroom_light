@@ -1,18 +1,20 @@
 {
     "on-hold": [
         [ [ "RightLight", "light.gameroom_group", "Vivid"], [ "RightLight", "light.gameroom_lamp", 0 ] ],
-        [ [ "Scene", "sceen.gameroom_blue" ], [ "RightLight", "light.gameroom_lamp", 0 ]]
-        [ [ "Scene", "sceen.gameroom_green" ], [ "RightLight", "light.gameroom_lamp", 0 ]]
-        [ [ "Scene", "sceen.gameroom_red" ], [ "RightLight", "light.gameroom_lamp", 0 ]]
+        [ [ "Scene", "scene.gameroom_blue" ], [ "RightLight", "light.gameroom_lamp", 0 ] ],
+        [ [ "Scene", "scene.gameroom_green" ], [ "RightLight", "light.gameroom_lamp", 0 ] ],
+        [ [ "Scene", "scene.gameroom_red" ], [ "RightLight", "light.gameroom_lamp", 0 ] ]
     ],
     "up-hold": [
-        [ [ "Scene", "sceen.gameroom_blue_dim" ], [ "RightLight", "light.gameroom_lamp", 0 ]]
-        [ [ "Scene", "sceen.gameroom_green_dim" ], [ "RightLight", "light.gameroom_lamp", 0 ]]
-        [ [ "Scene", "sceen.gameroom_red_dim" ], [ "RightLight", "light.gameroom_lamp", 0 ]]
+        [ [ "RightLight", "light.gameroom_group", "Vivid"], [ "RightLight", "light.gameroom_lamp", 0 ] ],
+        [ [ "Scene", "scene.gameroom_blue_dim" ], [ "RightLight", "light.gameroom_lamp", 0 ] ],
+        [ [ "Scene", "scene.gameroom_green_dim" ], [ "RightLight", "light.gameroom_lamp", 0 ] ],
+        [ [ "Scene", "scene.gameroom_red_dim" ], [ "RightLight", "light.gameroom_lamp", 0 ] ]
     ],
     "down-hold": [
-        [ [ "Scene", "sceen.gameroom_blue_dim" ], [ "RightLight", "light.gameroom_lamp", 0 ]]
-        [ [ "Scene", "sceen.gameroom_green_dim" ], [ "RightLight", "light.gameroom_lamp", 0 ]]
-        [ [ "Scene", "sceen.gameroom_red_dim" ], [ "RightLight", "light.gameroom_lamp", 0 ]]
+        [ [ "RightLight", "light.gameroom_group", "Vivid"], [ "RightLight", "light.gameroom_lamp", 0 ] ],
+        [ [ "Scene", "scene.gameroom_blue_dim" ], [ "RightLight", "light.gameroom_lamp", 0 ] ],
+        [ [ "Scene", "scene.gameroom_green_dim" ], [ "RightLight", "light.gameroom_lamp", 0 ] ],
+        [ [ "Scene", "scene.gameroom_red_dim" ], [ "RightLight", "light.gameroom_lamp", 0 ] ]
     ]
 }

@@ -34,8 +34,8 @@ class GameroomLight(NewLight):
             "Game Room", domain=DOMAIN, debug=False, debug_rl=False
         )
 
-        self.entities["light.gameroom_group"] = None
         self.entities["light.gameroom_lamp"] = None
+        self.entities["light.gameroom_group"] = None
         self.switch = "Gameroom Switch"
 
         self.has_brightness_threshold = True
