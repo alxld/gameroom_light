@@ -31,7 +31,7 @@ class GameroomLight(NewLight):
     def __init__(self) -> None:
         """Initialize Gameroom Light."""
         super(GameroomLight, self).__init__(
-            "Game Room", domain=DOMAIN, debug=False, debug_rl=False
+            "Gameroom", domain=DOMAIN, debug=False, debug_rl=False
         )
 
         self.entities["light.gameroom_lamp"] = None
