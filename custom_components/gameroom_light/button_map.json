@@ -1,17 +1,17 @@
 {
-    "on-hold": [
+    "on_hold": [
         [ [ "RightLight", "light.gameroom_group", "Vivid"], [ "RightLight", "light.gameroom_lamp", 0 ] ],
         [ [ "Scene", "scene.gameroom_blue" ], [ "RightLight", "light.gameroom_lamp", 0 ] ],
         [ [ "Scene", "scene.gameroom_green" ], [ "RightLight", "light.gameroom_lamp", 0 ] ],
         [ [ "Scene", "scene.gameroom_red" ], [ "RightLight", "light.gameroom_lamp", 0 ] ]
     ],
-    "up-hold": [
+    "up_hold": [
         [ [ "RightLight", "light.gameroom_group", "Vivid"], [ "RightLight", "light.gameroom_lamp", 0 ] ],
         [ [ "Scene", "scene.gameroom_blue_dim" ], [ "RightLight", "light.gameroom_lamp", 0 ] ],
         [ [ "Scene", "scene.gameroom_green_dim" ], [ "RightLight", "light.gameroom_lamp", 0 ] ],
         [ [ "Scene", "scene.gameroom_red_dim" ], [ "RightLight", "light.gameroom_lamp", 0 ] ]
     ],
-    "down-hold": [
+    "down_hold": [
         [ [ "RightLight", "light.gameroom_group", "Vivid"], [ "RightLight", "light.gameroom_lamp", 0 ] ],
         [ [ "Scene", "scene.gameroom_blue_dim" ], [ "RightLight", "light.gameroom_lamp", 0 ] ],
         [ [ "Scene", "scene.gameroom_green_dim" ], [ "RightLight", "light.gameroom_lamp", 0 ] ],
