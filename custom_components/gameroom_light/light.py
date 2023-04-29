@@ -36,7 +36,7 @@ class GameroomLight(NewLight):
 
         self.entities["light.gameroom_lamp"] = None
         self.entities["light.gameroom_group"] = None
-        # self.switch = "Gameroom Switch"
-        self.switch = "00:17:88:01:02:19:57:1b"
+        self.switch = "Gameroom Switch"
+        # self.switch = "00:17:88:01:02:19:57:1b"
 
         self.has_brightness_threshold = True
